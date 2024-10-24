@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:math';
-
 import 'package:flutter/material.dart';
 
 void main() {
@@ -17,7 +16,7 @@ class MyApp extends StatelessWidget {
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
       home: MyHomePage(
-        title: 'My Custom Title', // Set your title here
+        title: 'My Custom Title',
       ),
     );
   }
@@ -34,34 +33,16 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   PageController pageController = PageController();
-  int pageCount = 3;
+  int pageCount = 3; // Set this to the number of slides
+
   @override
   void initState() {
     super.initState();
     Timer.periodic(const Duration(seconds: 3), (timer) {
-      // print("page${pageController.page}");
-      // // double nextPage = pageController.page! + 1;
-      // // int page = nextPage.toInt();
-      // if (PageController.page >= pageCount - 1) {
-      //   pageController.animateToPage(page,
-      //       duration: Duration(milliseconds: 0),
-      //       curve: Curves.fastLinearToSlowEaseIn);
-      // } else {
-      //   pageController.animateToPage(page,
-      //       duration: Duration(milliseconds: 1000),
-      //       curve: Curves.fastLinearToSlowEaseIn);
-      // }
-
-      print("page ${pageController.page}");
-      if (pageController.page! >= pageCount - 1) {
-        pageController.animateToPage(0,
-            duration: Duration(microseconds: 1000),
-            curve: Curves.fastLinearToSlowEaseIn);
-      } else {
-        pageController.animateToPage(100,
-            duration: Duration(microseconds: 1000),
-            curve: Curves.fastLinearToSlowEaseIn);
-      }
+      int nextPage = (pageController.page!.round() + 1) % pageCount;
+      pageController.animateToPage(nextPage,
+          duration: const Duration(milliseconds: 1000),
+          curve: Curves.fastLinearToSlowEaseIn);
     });
   }
 
@@ -81,9 +62,9 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
         ),
         backgroundColor: Colors.white,
-        actions: [
+        actions: const [
           Padding(
-            padding: const EdgeInsets.only(right: 8.0),
+            padding: EdgeInsets.only(right: 8.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
@@ -120,19 +101,19 @@ class _MyHomePageState extends State<MyHomePage> {
             child: Stack(
               children: [
                 PageView(
-                  // ?
                   controller: pageController,
-                  children: [
+                  children: const [
                     AdsSlideCard(slideImage: "assets/f1.jpg"),
                     AdsSlideCard(slideImage: "assets/f3.jpg"),
                     AdsSlideCard(slideImage: "assets/f4.jpg"),
                   ],
                 ),
                 Positioned(
-                    bottom: 18.0,
-                    left: 0.0,
-                    right: 0.0,
-                    child: Center(child: SlideIndicator(pageController)))
+                  bottom: 18.0,
+                  left: 0.0,
+                  right: 0.0,
+                  child: Center(child: SlideIndicator(pageController)),
+                ),
               ],
             ),
           ),
@@ -141,8 +122,8 @@ class _MyHomePageState extends State<MyHomePage> {
             child: GridView.count(
               crossAxisCount: 4,
               shrinkWrap: true,
-              physics: NeverScrollableScrollPhysics(),
-              children: [
+              physics: const NeverScrollableScrollPhysics(),
+              children: const [
                 MenuFeature(iconAsset: 'assets/m_tuktuk.png', name: "Taxi"),
                 MenuFeature(iconAsset: 'assets/m_express.png', name: 'Express'),
                 MenuFeature(iconAsset: 'assets/m_food.png', name: 'Food'),
@@ -154,11 +135,8 @@ class _MyHomePageState extends State<MyHomePage> {
               ],
             ),
           ),
-          Container(
-            color: Colors.grey[200],
-            height: 8,
-          ),
-          Text(
+          Container(color: Colors.grey[200], height: 8),
+          const Text(
             "Trending Now",
             style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
           ),
@@ -168,23 +146,24 @@ class _MyHomePageState extends State<MyHomePage> {
               maxHeight: 202,
               child: ListView(
                 scrollDirection: Axis.horizontal,
-                children: [TrandingCard(), TrandingCard(), TrandingCard()],
+                children: const [
+                  TrandingCard(),
+                  TrandingCard(),
+                  TrandingCard()
+                ],
               ),
             ),
           ),
-          Container(
-            color: Colors.grey[200],
-            height: 8,
-          ),
-          PromotoShopCard(image: 'assets/f8.jpg'),
-          PromotoShopCard(image: 'assets/f9.jpg'),
+          Container(color: Colors.grey[200], height: 8),
+          const PromotoShopCard(image: 'assets/f8.jpg'),
+          const PromotoShopCard(image: 'assets/f9.jpg'),
         ]),
       ),
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
         unselectedItemColor: Colors.grey,
         selectedItemColor: Colors.blue,
-        items: [
+        items: const [
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
             label: "Home",
@@ -243,18 +222,19 @@ class MenuFeature extends StatelessWidget {
       onTap: () {},
       borderRadius: BorderRadius.circular(20),
       child: Container(
-          decoration: BoxDecoration(borderRadius: BorderRadius.circular(10)),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              SizedBox(width: 50, height: 50, child: Image.asset(iconAsset)),
-              Text(
-                name,
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-              )
-            ],
-          )),
+        decoration: BoxDecoration(borderRadius: BorderRadius.circular(10)),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            SizedBox(width: 50, height: 50, child: Image.asset(iconAsset)),
+            Text(
+              name,
+              style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+            )
+          ],
+        ),
+      ),
     );
   }
 }
@@ -268,13 +248,13 @@ class TrandingCard extends StatelessWidget {
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
       child: Container(
         height: 200,
-        // width: MediaQuery.of(context).size.width - 40,
         width: 200,
         child: ClipRRect(
-            child: Image.asset(
-          "assets/f6.jpg",
-          fit: BoxFit.cover,
-        )),
+          child: Image.asset(
+            "assets/f6.jpg",
+            fit: BoxFit.cover,
+          ),
+        ),
       ),
     );
   }
@@ -295,28 +275,22 @@ class SlideIndicator extends AnimatedWidget {
   }
 
   Widget buildIndicator(int index) {
-    print("build $index ${pageController.page}");
-
-    // Handle potential null values for pageController.page
     final currentPage =
         pageController.page ?? pageController.initialPage.toDouble();
     bool active = currentPage.round() == index;
 
-    // Calculate the selection factor
     double select = max(0.0, 1.0 - (currentPage - index).abs());
     double decrease = 10 * select;
 
     return Container(
       width: 30,
-      margin: EdgeInsets.symmetric(horizontal: 4.0),
+      margin: const EdgeInsets.symmetric(horizontal: 4.0),
       child: Center(
         child: Container(
           width: 20 - decrease,
           height: 5,
           decoration: BoxDecoration(
-            color: active
-                ? Colors.blue
-                : Colors.grey, // Change color based on active state
+            color: active ? Colors.blue : Colors.grey,
             borderRadius: BorderRadius.circular(10),
           ),
         ),
